@@ -64,7 +64,14 @@ $( function() {
 			htmlString += "Tämä maksaisi:<br>" 
 			htmlString += (ticketsPerMonth * buscard.oneTimeTicket ).toFixed(2) + " eur bussikortilla, (" + ticketsPerMonth + " x " + buscard.oneTimeTicket +" eur)<br>";
 			htmlString += (buscard.oneMonthTicket).toFixed(2) + " eur kuukausikortilla, (" + 1 + " x " + buscard.oneMonthTicket +" eur)<br>";
-			htmlString += (workCardPrice).toFixed(2) + " eur työmatkakortilla tai sitten (" + 1 + " x " + workCardPrice +" eur) <br>";
+			
+			if( ticketsPerMonth <= 50 ) {
+				htmlString += (workCardPrice).toFixed(2) + " eur työmatkakortilla tai sitten (" + 1 + " x " + workCardPrice +" eur) <br>";
+			} 
+			else {
+				htmlString += ( workCardPrice + ( (ticketsPerMonth-50) * buscard.oneTimeTicket ) ).toFixed(2) + " eur työmatkakortilla ja bussikortilla, (" + 1 + " x " + workCardPrice + " eur + " + (ticketsPerMonth-50) + " x " + buscard.oneTimeTicket + " eur )<br>";
+			}
+			
 			htmlString += (ticketsPerMonth * withoutCard ).toFixed(2) + " eur ilman mitään bussikortteja. (" + ticketsPerMonth + " x " + withoutCard +" eur)<br>";
 
 			htmlString += "<font size='1'>(Jos menetit rahaa laskurin toimiessa väärin, ota yhteys Matlockiin.)</font><br>";
