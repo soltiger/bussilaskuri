@@ -66,6 +66,8 @@ $( function() {
 			htmlString += (buscard.oneMonthTicket).toFixed(2) + " eur kuukausikortilla, (" + 1 + " x " + buscard.oneMonthTicket +" eur)<br>";
 			htmlString += (workCardPrice).toFixed(2) + " eur työmatkakortilla tai sitten (" + 1 + " x " + workCardPrice +" eur) <br>";
 			htmlString += (ticketsPerMonth * withoutCard ).toFixed(2) + " eur ilman mitään bussikortteja. (" + ticketsPerMonth + " x " + withoutCard +" eur)<br>";
+
+			htmlString += "<font size='1'>(Jos menetit rahaa laskurin toimiessa väärin, ota yhteys Matlockiin.)</font><br>";
 			
 			$( "#results" ).html( htmlString );
 		}
