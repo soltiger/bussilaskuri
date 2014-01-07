@@ -3,7 +3,7 @@
 <html>
 
 <head>
-	<title>Bussikorttilaskuri</title>
+	<meta charset="windows-1252">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Bootstrap -->
@@ -17,9 +17,10 @@
     <![endif]-->
 
 	<script src="jquery/jquery-1.10.2.min.js"></script>	
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
 	
 	<script src="js/laskuri.js"></script>
+	<title>Bussikorttilaskuri</title>
 </head>
 
 <body>
@@ -29,31 +30,30 @@
 			<p class="lead"><a href="http://joukkoliikenne.tampere.fi/fi/matkustaminen/hinnat.html" target="_blank">TKL hinnasto</a></p>
 		</div>
 
-	<br><br>
-	
-	
-	<form>
-		Kuinka monta kertaa viikossa aiot matkustaa tulevan 30 päivän aikana?<br>
-		<input type="text" id="ticketsPerWeek"><br><br>
-		
-		Oletko normaali? 
-		<input type="radio" name="discount" value="normal" checked><br>
-
-		Oletko opiskelija tai nuori? 
-		<input type="radio" name="discount" value="student"><br>
-
-		Oletko lapsi? 
-		<input type="radio" name="discount" value="kid"><br>
-		
-		<br>
-		
-		<input type="button" value="Laske" id="calculateButton">
-		
 		<br><br>
-		
-		<div id="results"></div>
-	</form>
 	
+		<form>
+			Kuinka monta kertaa viikossa aiot matkustaa tulevan 30 päivän aikana?<br>
+			<input type="text" id="ticketsPerWeek"><br><br>
+		
+			Oletko normaali? 
+			<input type="radio" name="discount" value="normal" checked><br>
+
+			Oletko opiskelija tai nuori? 
+			<input type="radio" name="discount" value="student"><br>
+
+			Oletko lapsi? 
+			<input type="radio" name="discount" value="kid"><br>
+		
+			<br>
+		
+			<input type="button" value="Laske" id="calculateButton">
+		
+			<br><br>
+		
+			<div id="results"></div>
+		</form>
+	</div>
 </body>
 
 </html>
