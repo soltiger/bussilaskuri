@@ -1,4 +1,5 @@
 bussilaskuri
 ============
 
-TKL Bussilipun hintalaskuri
+[TKL Bussilipun hintalaskuri](https://sessio.github.io/bussilaskuri/)
+
