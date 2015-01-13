@@ -3,6 +3,20 @@ function BusCard( oneTimeTicket, oneMonthTicket ) {
   this.oneMonthTicket = oneMonthTicket;
 }
 
+/**
+ * Set a validation state for input element
+ * @param String el Input element selector
+ * @param String state State as in "error", "warning" or "success" of omit if you want to clear
+ * @param String error Validation error message or omit if you want to clear
+ */
+function validateInput(params) {
+  var formGroup = $(params.el).closest(".form-group");
+  formGroup.removeClass("has-error", "has-success", "has-warning");
+  formGroup.find("div.error-message").remove();
+  if (params.state) formGroup.addClass("has-"+params.state);
+  if (params.error) formGroup.append("<div class='error-message text-danger'>"+params.error+"</div>");
+}
+
 // Normal buscard prices
 normalCard = new BusCard( 1.74, 47.0 );
 workCardPrice = 41.50;
@@ -15,13 +29,25 @@ kidCard = new BusCard( 0.87, 23.50 );
 normalWithoutCardPrice = 2.60;
 kidWithoutCardPrice = 1.00;
 
+function validateForm() {
+  if (validateNumber($("#ticketsPerWeek").val())) {
+    validateInput({ el: "#ticketsPerWeek" });
+    return true;
+  }
+  else {
+    validateInput({ el: "#ticketsPerWeek", state: "error", error: "Syötä joku järkevä numero!" });
+    return false;
+  }
+}
+
+
 function validateNumber( maybeNumber ) {
   if( maybeNumber !== "") {
     var value = maybeNumber.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-var intRegex = /^\d+$/;
-if(!intRegex.test(value)) {
-  return false;
-}
+    var intRegex = /^\d+$/;
+    if(!intRegex.test(value)) {
+      return false;
+    }
   }
   else {
     return false;
@@ -36,8 +62,8 @@ function countTicketsForMonth( ticketsPerWeek ) {
 
 $( function() {
   $( "#calculateButton" ).click( function() {
-    ticketsPerWeek = $('#ticketsPerWeek').val();
-    if( validateNumber( ticketsPerWeek ) ) {
+    if( validateForm() ) {
+      var ticketsPerWeek = $("#ticketsPerWeek").val();
       ticketsPerMonth = countTicketsForMonth( ticketsPerWeek );
 
       var buscard = "";
@@ -74,12 +100,9 @@ $( function() {
 
       htmlString += (ticketsPerMonth * withoutCard ).toFixed(2) + " eur ilman mitään bussikortteja. (" + ticketsPerMonth + " x " + withoutCard +" eur)<br>";
 
-      htmlString += "<font size='1'>(Jos menetit rahaa laskurin toimiessa väärin, ota yhteys Matlockiin.)</font><br>";
+      htmlString += "<font size='1'>(Jos menetit rahaa laskurin toimiessa väärin, ota yhteys <strike>Matlockiin</strike>Columboon.)</font><br>";
 
       $( "#results" ).html( htmlString );
-    }
-    else {
-      $( "#results" ).html( "Syötä joku järkevä numero!" );
     }
   });
 });

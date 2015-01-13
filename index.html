@@ -32,27 +32,42 @@
 
   <br><br>
 
-  <form>
-    Kuinka monta kertaa viikossa aiot matkustaa tulevan 30 päivän aikana?<br>
-    <input type="text" id="ticketsPerWeek"><br><br>
+  <form style="padding-bottom: 5rem">
+    <div class="form-group">
+      <label for="ticketsPerWeek">Kuinka monta kertaa viikossa aiot matkustaa tulevan 30 päivän aikana?</label>
+      <div class="row">
+      <div class="col-xs-2">
+      <input class="form-control" type="text" id="ticketsPerWeek">
+      </div>
+      </div>
+    </div>
 
-    Oletko normaali?
-    <input type="radio" name="discount" value="normal" checked><br>
+    <div class="radio">
+      <label>
+        <input type="radio" name="discount" value="normal" checked>
+        Olen normaali
+      </label>
+    </div>
 
-    Oletko opiskelija tai nuori?
-    <input type="radio" name="discount" value="student"><br>
+    <div class="radio">
+      <label>
+        <input type="radio" name="discount" value="student">
+        Olen opiskelija tai nuori
+      </label>
+    </div>
 
-    Oletko lapsi?
-    <input type="radio" name="discount" value="kid"><br>
+    <div class="radio">
+      <label>
+        <input type="radio" name="discount" value="kid">
+        Olen lapsi
+      </label>
+    </div>
 
-    <br>
+    <input class="btn btn-primary btn-lg" type="button" value="Laske" id="calculateButton">
 
-    <input type="button" value="Laske" id="calculateButton">
-
-    <br><br>
-
-    <div id="results"></div>
   </form>
+
+  <div id="results"></div>
 </div>
 </body>
 
