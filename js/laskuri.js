@@ -1,6 +1,20 @@
 function BusCard( oneTimeTicket, oneMonthTicket ) {
-	this.oneTimeTicket = oneTimeTicket;
-	this.oneMonthTicket = oneMonthTicket;
+  this.oneTimeTicket = oneTimeTicket;
+  this.oneMonthTicket = oneMonthTicket;
+}
+
+/**
+ * Set a validation state for input element
+ * @param String el Input element selector
+ * @param String state State as in "error", "warning" or "success" of omit if you want to clear
+ * @param String error Validation error message or omit if you want to clear
+ */
+function validateInput(params) {
+  var formGroup = $(params.el).closest(".form-group");
+  formGroup.removeClass("has-error", "has-success", "has-warning");
+  formGroup.find("div.error-message").remove();
+  if (params.state) formGroup.addClass("has-"+params.state);
+  if (params.error) formGroup.append("<div class='error-message text-danger'>"+params.error+"</div>");
 }
 
 // Normal buscard prices
@@ -15,71 +29,80 @@ kidCard = new BusCard( 0.87, 23.50 );
 normalWithoutCardPrice = 2.60;
 kidWithoutCardPrice = 1.00;
 
+function validateForm() {
+  if (validateNumber($("#ticketsPerWeek").val())) {
+    validateInput({ el: "#ticketsPerWeek" });
+    return true;
+  }
+  else {
+    validateInput({ el: "#ticketsPerWeek", state: "error", error: "Sy√∂t√§ joku j√§rkev√§ numero!" });
+    return false;
+  }
+}
+
+
 function validateNumber( maybeNumber ) {
-	if( maybeNumber != "") {
-		var value = maybeNumber.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-		var intRegex = /^\d+$/;
-		if(!intRegex.test(value)) {
-			return false;
-		}
-	} 
-	else {
-		return false;
-	}
-	
-	return true;
+  if( maybeNumber !== "") {
+    var value = maybeNumber.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    var intRegex = /^\d+$/;
+    if(!intRegex.test(value)) {
+      return false;
+    }
+  }
+  else {
+    return false;
+  }
+
+  return true;
 }
 
 function countTicketsForMonth( ticketsPerWeek ) {
-	return Math.ceil( ticketsPerWeek / 7 * 30 );
+  return Math.ceil( ticketsPerWeek / 7 * 30 );
 }
 
 $( function() {
-	$( "#calculateButton" ).click( function() {
-		ticketsPerWeek = $('#ticketsPerWeek').val();
-		if( validateNumber( ticketsPerWeek ) ) {
-			ticketsPerMonth = countTicketsForMonth( ticketsPerWeek );
-			
-			var buscard = "";
-			
-			switch( $('input:radio[name=discount]:checked').val() ) {
-			case 'normal':
-				buscard = normalCard;
-				withoutCard = normalWithoutCardPrice;
-				break;
-				
-			case 'student':
-				buscard = studentCard;
-				withoutCard = normalWithoutCardPrice;
-				break;
-				
-			case 'kid':
-				buscard = kidCard;
-				withoutCard = kidWithoutCardPrice;
-				break;
-			}
-			
-			htmlString = "";
-			htmlString += "Matkustat " + ticketsPerMonth + " kertaa seuraavan kuukauden aikana. ";
-			htmlString += "T‰m‰ maksaisi:<br>" 
-			htmlString += (ticketsPerMonth * buscard.oneTimeTicket ).toFixed(2) + " eur bussikortilla, (" + ticketsPerMonth + " x " + buscard.oneTimeTicket +" eur)<br>";
-			htmlString += (buscard.oneMonthTicket).toFixed(2) + " eur kuukausikortilla, (" + 1 + " x " + buscard.oneMonthTicket +" eur)<br>";
-			
-			if( ticketsPerMonth <= 50 ) {
-				htmlString += (workCardPrice).toFixed(2) + " eur tyˆmatkakortilla tai sitten (" + 1 + " x " + workCardPrice +" eur) <br>";
-			} 
-			else {
-				htmlString += ( workCardPrice + ( (ticketsPerMonth-50) * buscard.oneTimeTicket ) ).toFixed(2) + " eur tyˆmatkakortilla ja bussikortilla, (" + 1 + " x " + workCardPrice + " eur + " + (ticketsPerMonth-50) + " x " + buscard.oneTimeTicket + " eur )<br>";
-			}
-			
-			htmlString += (ticketsPerMonth * withoutCard ).toFixed(2) + " eur ilman mit‰‰n bussikortteja. (" + ticketsPerMonth + " x " + withoutCard +" eur)<br>";
+  $( "#calculateButton" ).click( function() {
+    if( validateForm() ) {
+      var ticketsPerWeek = $("#ticketsPerWeek").val();
+      ticketsPerMonth = countTicketsForMonth( ticketsPerWeek );
 
-			htmlString += "<font size='1'>(Jos menetit rahaa laskurin toimiessa v‰‰rin, ota yhteys Matlockiin.)</font><br>";
-			
-			$( "#results" ).html( htmlString );
-		}
-		else {
-			$( "#results" ).html( "Syˆt‰ joku j‰rkev‰ numero!" );
-		}
-	});
+      var buscard = "";
+
+      switch( $('input:radio[name=discount]:checked').val() ) {
+        case 'normal':
+          buscard = normalCard;
+        withoutCard = normalWithoutCardPrice;
+        break;
+
+        case 'student':
+          buscard = studentCard;
+        withoutCard = normalWithoutCardPrice;
+        break;
+
+        case 'kid':
+          buscard = kidCard;
+        withoutCard = kidWithoutCardPrice;
+        break;
+      }
+
+      htmlString = "";
+      htmlString += "Matkustat " + ticketsPerMonth + " kertaa seuraavan kuukauden aikana. ";
+      htmlString += "T√§m√§ maksaisi:<br>";
+      htmlString += (ticketsPerMonth * buscard.oneTimeTicket ).toFixed(2) + " eur bussikortilla, (" + ticketsPerMonth + " x " + buscard.oneTimeTicket +" eur)<br>";
+      htmlString += (buscard.oneMonthTicket).toFixed(2) + " eur kuukausikortilla, (" + 1 + " x " + buscard.oneMonthTicket +" eur)<br>";
+
+      if( ticketsPerMonth <= 50 ) {
+        htmlString += (workCardPrice).toFixed(2) + " eur ty√∂matkakortilla tai sitten (" + 1 + " x " + workCardPrice +" eur) <br>";
+      }
+      else {
+        htmlString += ( workCardPrice + ( (ticketsPerMonth-50) * buscard.oneTimeTicket ) ).toFixed(2) + " eur ty√∂matkakortilla ja bussikortilla, (" + 1 + " x " + workCardPrice + " eur + " + (ticketsPerMonth-50) + " x " + buscard.oneTimeTicket + " eur )<br>";
+      }
+
+      htmlString += (ticketsPerMonth * withoutCard ).toFixed(2) + " eur ilman mit√§√§n bussikortteja. (" + ticketsPerMonth + " x " + withoutCard +" eur)<br>";
+
+      htmlString += "<font size='1'>(Jos menetit rahaa laskurin toimiessa v√§√§rin, ota yhteys <strike>Matlockiin</strike>Columboon.)</font><br>";
+
+      $( "#results" ).html( htmlString );
+    }
+  });
 });
