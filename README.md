@@ -2,4 +2,4 @@ bussilaskuri
 ============
 
 TKL Bussilipun hintalaskuri
-https://soltiger.github.io/bussilaskuri/
+Now on web! https://soltiger.github.io/bussilaskuri/
